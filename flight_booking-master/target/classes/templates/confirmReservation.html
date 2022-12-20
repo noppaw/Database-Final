@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Complete Reservation</title>
+</head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+    $( function() {
+        $( ".datepicker" ).datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+    } );
+</script>
+<style>
+    .textLeft {
+        text-align: left;
+    }
+    .textRight {
+        text-align: right;
+    }
+    td {
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+<body>
+<center>
+    <h1>Confirm reservation</h1>
+    <table style="width: 70%; min-width: 700px">
+        <tr>
+            <td class="textLeft" colspan="3"><span>ABC Airlines</span></td>
+            <td class="textRight" colspan="4" ><span th:text="${departureFlight.departureCity}"/> to <span th:text="${departureFlight.arrivalCity}"/></td>
+        </tr>
+        <tr>
+            <td colspan="7" class="textRight">Departure: <span th:text="${#dates.format(departureFlight.dateOfDeparture, 'dd-MM-yyyy')}"/> Arrivals: <span th:text="${#dates.format(arrivalFlight.dateOfDeparture, 'dd-MM-yyyy')}"/></td>
+        </tr>
+        <tr>
+            <td colspan="7"></td>
+        </tr>
+        <tr>
+            <td colspan="7"></td>
+        </tr>
+        <tr>
+            <td >Airlines</td>
+            <td >Departure City</td>
+            <td >Arrival City</td>
+            <td >Time Of Departure</td>
+            <td >Time Of Arrival</td>
+            <td >Estimated Time</td>
+            <td >Price</td>
+        </tr>
+        <tr>
+            <td th:text="${departureFlight.operatingAirlines}"></td>
+            <td th:text="${departureFlight.departureCity}"></td>
+            <td th:text="${departureFlight.arrivalCity}"></td>
+            <td th:text="${#dates.format(departureFlight.localTimeDeparture, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(departureFlight.localTimeArrival, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(departureFlight.estimatedDepartureTime, 'HH:mm')}"></td>
+            <td th:text="${#numbers.formatCurrency(departureFlight.price)}"></td>
+        </tr>
+        <tr>
+            <td th:text="${arrivalFlight.operatingAirlines}"></td>
+            <td th:text="${arrivalFlight.departureCity}"></td>
+            <td th:text="${arrivalFlight.arrivalCity}"></td>
+            <td th:text="${#dates.format(arrivalFlight.localTimeDeparture, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(arrivalFlight.localTimeArrival, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(arrivalFlight.estimatedDepartureTime, 'HH:mm')}"></td>
+            <td th:text="${#numbers.formatCurrency(arrivalFlight.price)}"></td>
+        </tr>
+    </table>
+
+    <form th:action="@{/reservation/complete}" method="post">
+    <table>
+        <tr>
+            <td colspan="2"><h2>Passenger details</h2></td>
+        </tr>
+        <tr>
+            <td>First Name:</td>
+            <td><input type="text" name="pFirstName"></td>
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td><input type="text" name="pLastName"></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="text" name="pEmail"></td>
+        </tr>
+        <tr>
+            <td>Phone:</td>
+            <td><input type="text" name="pPhone"></td>
+        </tr>
+        <tr>
+            <td>Birthdate:</td>
+            <td><input class="datepicker" type="text" name="pBirthdate"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h2>Card details</h2></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" name="nameOnCard"></td>
+        </tr>
+        <tr>
+            <td>Card number:</td>
+            <td><input type="text" name="cardNumber"></td>
+        </tr>
+        <tr>
+            <td>Expiry Date:</td>
+            <td><input type="text" name="expiryDate"></td>
+        </tr>
+        <tr>
+            <td>CVV Code:</td>
+            <td><input type="password" name="cvvNumber"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="hidden" name="departureFlightId" th:value="${departureFlight.id}">
+                <input type="hidden" name="arrivalFlightId" th:value="${arrivalFlight.id}">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value ="Book"></td>
+        </tr>
+    </table>
+    </form>
+</center>
+</body>
+</html>

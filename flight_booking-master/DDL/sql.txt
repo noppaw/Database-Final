@@ -1,0 +1,37 @@
+
+update flight
+set localtime_arrival = adddate(adddate(localtime_departure, interval 1 hour), interval 15 minute)
+where date_of_departure = '2022-12-01';
+
+update flight
+set price = 1100;
+
+update flight
+set price = round(price * 1.5)
+where time(localtime_departure) > '11:00:00';
+
+update flight
+set price = round(price * 1.5)
+where time(localtime_departure) between '11:00:00' and '20:10:00';
+
+insert into flight (arrival_city, date_of_departure, departure_city, estimated_departure_time, flight_number,
+                    localtime_arrival, localtime_departure, operating_airlines, created_at, created_by, updated_at,
+                    updated_by, price)
+select arrival_city, adddate(date_of_departure, interval 1 day), departure_city, estimated_departure_time, flight_number,
+                    adddate(localtime_arrival, interval 1 day), adddate(localtime_departure, interval 1 day),
+       operating_airlines, created_at, created_by, updated_at,
+                    updated_by, price from flight
+where date_of_departure = (select max(date_of_departure) from flight);
+
+select f.date_of_departure, f.price, round(f.price*p.price_add_rate) from flight f, prime_time p
+where f.date_of_departure = p.in_date;
+
+update flight f, prime_time p
+set f.price = round(f.price*p.price_add_rate)
+where f.date_of_departure = p.in_date;
+
+update flight
+set enabled = true
+where id > 0;
+
+alter table flight alter column enabled set default true;

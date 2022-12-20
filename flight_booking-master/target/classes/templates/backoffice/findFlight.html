@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Find Flights</title>
+</head>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+    $( function() {
+        $( ".datepicker" ).datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: 1,
+        });
+    } );
+</script>
+
+<style>
+    .textLeft {
+        text-align: left;
+    }
+    .textRight {
+        text-align: right;
+    }
+    td {
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+<body>
+<center>
+    <h1>Find Flight</h1>
+    <form th:action="@{/flights/findFlights}" method="post">
+        <table>
+            <tr>
+                <td>Form:</td>
+                <td><input type="text" name="from" th:value="${from}"></td>
+                <td>To:</td>
+                <td><input type="text" name="to" th:value="${to}"></td>
+                <td>Departure date:</td>
+                <td><input class="datepicker" type="text" autocomplete="off" name="dateOfDeparture" th:value="${dateOfDeparture}"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="textRight"><input type="submit" value="search"></td>
+            </tr>
+        </table>
+    </form>
+        <table th:if="${flights}">
+            <tr>
+                <td >Airlines</td>
+                <td >Departure City</td>
+                <td >Arrival City</td>
+                <td >Time Of Departure</td>
+                <td >Time Of Arrival</td>
+                <td >Estimated Time</td>
+                <td >Price</td>
+                <td ></td>
+                <td >
+                    <form method="POST" th:action="@{/flights/add}">
+                        <button type="submit" name="submit" value="value" class="link-button">Add</button>
+                    </form>
+                </td>
+            </tr>
+            <!--/*@thymesVar id="flights" type=""*/-->
+            <tr th:each="flight:${flights}" >
+                <td th:text="${flight.operatingAirlines}"></td>
+                <td th:text="${flight.departureCity}"></td>
+                <td th:text="${flight.arrivalCity}"></td>
+<!--                <td th:text="${flight.localTimeDeparture}"></td>-->
+<!--                <td th:text="${flight.localTimeArrival}"></td>-->
+<!--                <td th:text="${flight.estimatedDepartureTime}"></td>-->
+                <td th:text="${#dates.format(flight.localTimeDeparture, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#dates.format(flight.localTimeArrival, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#dates.format(flight.estimatedDepartureTime, 'HH:mm')}"></td>
+                <td th:text="${#numbers.formatCurrency(flight.price)}"></td>
+                <td >
+                    <form method="POST" th:action="@{/flights/edit(id=${flight.id})}">
+                        <button type="submit" name="submit" value="value" class="link-button">Edit</button>
+                    </form>
+                </td>
+                <td >
+                    <form method="POST"
+                          th:action="@{/flights/delete(id=${flight.id},from=${from},to=${to},dateOfDeparture=${dateOfDeparture})}">
+                        <button type="submit" name="submit" value="value" class="link-button">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+</center>
+
+
+</body>
+</html>

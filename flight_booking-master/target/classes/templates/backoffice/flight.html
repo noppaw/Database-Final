@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ADD Flight</title>
+</head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+    $( function() {
+        $( ".datepicker" ).datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: 1,
+        });
+    } );
+</script>
+
+<style>
+    .textLeft {
+        text-align: left;
+    }
+    .textRight {
+        text-align: right;
+    }
+    td {
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+<body>
+<center>
+    <h1>Add Flight</h1>
+    <form th:action="@{/flights/save}" method="post" th:object="${Flight}">
+        <input type="hidden" name="id" th:value="${Flight.id}">
+        <input type="hidden" name="enabled" th:value="${Flight.enabled}">
+        <table>
+            <tr>
+                <td class="textRight">Flight number:</td>
+                <td class="textLeft"><input type="text" name="flightNumber" th:value="${Flight.flightNumber}"></td>
+            </tr>
+            <tr>
+                <td class="textRight">Operating airlines:</td>
+                <td class="textLeft"><input type="text" name="operatingAirlines" th:value="${Flight.operatingAirlines}"></td>
+            </tr>
+            <tr>
+                <td class="textRight">Departure city:</td>
+                <td class="textLeft" ><input type="text" name="departureCity" th:value="${Flight.departureCity}"></td>
+            </tr>
+            <tr>
+                <td class="textRight">Arrival city:</td>
+                <td class="textLeft" ><input type="text" name="arrivalCity" th:value="${Flight.arrivalCity}"></td>
+            </tr>
+            <tr>
+                <td class="textRight">Date of departure:</td>
+                <td class="textLeft" >
+                    <input class="datepicker" type="text" autocomplete="off" name="iDateOfDeparture" th:value="${#dates.format(Flight.dateOfDeparture, 'dd-MM-yyyy')}">
+                </td>
+            </tr>
+            <tr>
+                <td class="textRight">Time of departure:</td>
+                <td class="textLeft" >
+                    <input name="iLocalDateDeparture" class="datepicker" type="text" autocomplete="off" th:value="${#dates.format(Flight.localTimeDeparture, 'dd-MM-yyyy')}">
+                    <input name="iLocalTimeDeparture" type="text" autocomplete="off" th:value="${#dates.format(Flight.localTimeDeparture, 'HH:mm')}">
+                </td>
+            </tr>
+            <tr>
+                <td class="textRight">Time of arrival:</td>
+                <td class="textLeft" >
+                    <input name="iLocalDateArrival" class="datepicker" type="text" autocomplete="off" th:value="${#dates.format(Flight.localTimeArrival, 'dd-MM-yyyy')}">
+                    <input name="iLocalTimeArrival" type="text" autocomplete="off" th:value="${#dates.format(Flight.localTimeArrival, 'HH:mm')}">
+                </td>
+            </tr>
+            <tr>
+                <td class="textRight">Estimated time:</td>
+                <td class="textLeft" ><input type="text" autocomplete="off" name="iEstimatedDepartureTime" th:value="${Flight.estimatedDepartureTime}"></td>
+            </tr>
+            <tr>
+                <td class="textRight">price:</td>
+                <td class="textLeft" ><input type="number" name="price" th:value="${Flight.price}"></td>
+            </tr>
+            <tr>
+                <td class="textRight"></td>
+                <td class="textRight"><input type="submit" value="Save"></td>
+            </tr>
+        </table>
+    </form>
+</center>
+</body>
+</html>

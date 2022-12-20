@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Find Flights</title>
+</head>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+    $( function() {
+        $( ".datepicker" ).datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: 1,
+        });
+    } );
+</script>
+<style>
+    td {
+        padding: 10px;
+    }
+</style>
+<body>
+<center>
+    <img th:src="@{/assets/image/plane.png}" style="width: 5em;"><br/>
+    <h1>Find Flight</h1>
+    <pre>
+    <form th:action="@{/flights}" method="post">
+        <table>
+            <tr>
+                <td>Form:</td>
+                <td><input type="text" name="from"></td>
+                <td>To:</td>
+                <td><input type="text" name="to"></td>
+            </tr>
+            <tr>
+                <td>Departure date:</td>
+                <td><input class="datepicker" type="text" autocomplete="off" name="dateOfDeparture"></td>
+                <td>Arrivals date:</td>
+                <td><input class="datepicker" type="text" autocomplete="off" name="dateOfArrivals"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="search"></td>
+            </tr>
+        </table>
+    </form>
+</pre>
+</center>
+
+
+</body>
+</html>
